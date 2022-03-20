@@ -52,9 +52,12 @@ namespace ConsoleApp_Forerunner
             Transform_Info_From_T carry=new Transform_Info_From_T { };
             carry.START1 = src_Info[0];
             carry.START2 = src_Info[1];
-            ushort tmp1 = Convert.ToByte(src_Info[2]);
-            ushort tmp2 = Convert.ToByte(src_Info[3]);
-            carry.Info_Length = (ushort)(tmp1 + tmp2);
+            byte tmp1 = Convert.ToByte(src_Info[2]);
+            byte tmp2 = Convert.ToByte(src_Info[3]);
+            int uni = tmp1;
+            uni <<= 8;
+            uni += tmp2;
+            carry.Info_Length = Convert.ToUInt16(uni);
             //carry.Info_Length = Convert.ToInt16(src_Info[2..4]);
             carry.ID  = Convert.ToByte(src_Info[4]);
             carry.Function_Code  = Convert.ToByte(src_Info[5]);
