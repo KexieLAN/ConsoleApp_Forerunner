@@ -102,8 +102,63 @@ namespace ConsoleApp_Forerunner
         }
     }
 
-    class Statution_Change //用来实现对结构体的解析
+    class Data_Parsing //用来实现对结构体的解析
     {
+        //解析上传的报文的功能代码
+        public void Function_Code_Judge(Transform_Info_From_T src)
+        {
+            switch (src.Function_Code)
+            {
+                case 0x60:
+                    if (src.Function_Tag == 0x00)
+                        System_Info();
+                    else
+                        break;
+                    break;
+                case 0x70:
+                    if (src.Function_Tag == 0x00)
+                        Bug_Info();
+                    break;
+                case 0x80:
+                    if (src.Function_Tag == 0x00)
+                        Partition_Info();
+                    break;
+                case 0x90:
+                    if (src.Function_Tag == 0x00)
+                        Detector_Info();
+                    break;
+                case 0xA0:
+                    if (src.Function_Tag == 0x00)
+                        Fire_Extinguisher_Info();
+                    break;
+                default:
+                    break;
+            }
+        }
+        //系统信息解析
+        private void System_Info()
+        {
 
+        }
+        //故障信息解析
+        private void Bug_Info()
+        {
+
+        }
+        //分区信息解析
+        private void Partition_Info()
+        {
+
+        }
+        //探测器信息解析
+        private void Detector_Info()
+        {
+
+        }
+        //灭火器信息解析
+        private void Fire_Extinguisher_Info()
+        {
+
+        }
     }
 }
