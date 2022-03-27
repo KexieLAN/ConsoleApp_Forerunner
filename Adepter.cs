@@ -114,54 +114,101 @@ namespace ConsoleApp_Forerunner
             {
                 case 0x60:
                     if (src.Function_Tag == 0x00)
-                        System_Info();
+                        System_Info_alz(src);
                     else
                         break;
                     break;
                 case 0x70:
                     if (src.Function_Tag == 0x00)
-                        Bug_Info();
+                        Bug_Info_alz(src);
                     break;
                 case 0x80:
                     if (src.Function_Tag == 0x00)
-                        Partition_Info();
+                        Partition_Info_alz(src);
                     break;
                 case 0x90:
                     if (src.Function_Tag == 0x00)
-                        Detector_Info();
+                        Detector_Info_alz(src);
                     break;
                 case 0xA0:
                     if (src.Function_Tag == 0x00)
-                        Fire_Extinguisher_Info();
+                        Fire_Extinguisher_Info_alz(src);
                     break;
                 default:
                     break;
             }
         }
         //系统信息解析
-        private void System_Info()
+        private void System_Info_alz(Transform_Info_From_T src)
         {
+            if(src.Function_Tag==0x00)
+            {
+                Sys_Info ss;
+                byte num = Convert.ToByte(src.Data[0]);
+                ushort waring_count,bug_count,tt_count;
+                int tmp;
+                tmp = Convert.ToInt32(src.Data[1]);
+                tmp <<= 8;
+                waring_count = Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[2]));
+                tmp = Convert.ToInt32(src.Data[3]);
+                tmp <<= 8;
+                bug_count= Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[4]));
+                tmp = Convert.ToInt32(src.Data[5]);
+                tmp <<= 8;
+                tt_count = Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[6]));
+            }
+            else if(src.Function_Tag==0x01)
+            {
 
+            }
         }
         //故障信息解析
-        private void Bug_Info()
+        private void Bug_Info_alz(Transform_Info_From_T src)
         {
+            if (src.Function_Tag == 0x00)
+            {
 
+            }
+            else if (src.Function_Tag == 0x01)
+            {
+
+            }
         }
         //分区信息解析
-        private void Partition_Info()
+        private void Partition_Info_alz(Transform_Info_From_T src)
         {
+            if (src.Function_Tag == 0x00)
+            {
 
+            }
+            else if (src.Function_Tag == 0x01)
+            {
+
+            }
         }
         //探测器信息解析
-        private void Detector_Info()
+        private void Detector_Info_alz(Transform_Info_From_T src)
         {
+            if (src.Function_Tag == 0x00)
+            {
 
+            }
+            else if (src.Function_Tag == 0x01)
+            {
+
+            }
         }
         //灭火器信息解析
-        private void Fire_Extinguisher_Info()
+        private void Fire_Extinguisher_Info_alz(Transform_Info_From_T src)
         {
+            if (src.Function_Tag == 0x00)
+            {
 
+            }
+            else if (src.Function_Tag == 0x01)
+            {
+
+            }
         }
     }
 }
