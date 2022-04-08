@@ -105,7 +105,7 @@ namespace ConsoleApp_Forerunner
         }
     }
 
-    class Data_Parsing //用来实现对结构体的解析
+    public class Data_Parsing //用来实现对结构体的解析
     {
         //解析上传的报文的功能代码
         public void Function_Code_Judge(Transform_Info_From_T src)
