@@ -161,6 +161,11 @@ namespace ConsoleApp_Forerunner
             {
 
             }
+            else
+            {
+                
+            }
+            return;
         }
         //故障信息解析
         private void Bug_Info_alz(Transform_Info_From_T src)
