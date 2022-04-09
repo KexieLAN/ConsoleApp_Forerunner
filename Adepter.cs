@@ -108,30 +108,46 @@ namespace ConsoleApp_Forerunner
     public class Data_Parsing //用来实现对结构体的解析
     {
         //解析上传的报文的功能代码
+        public List<Sys_Info> sysInfos = new List<Sys_Info>();
+        public byte sysInfos_num;
+
+        public List<Bug_Info> bugInfos = new List<Bug_Info>();
+        public byte bugInfos_num;
+
+        public List<Partition_Info> partitionInfos = new List<Partition_Info>();
+        public byte partitionInfos_num;
+
+        public List<Detector_Info> detectorInfos = new List<Detector_Info>();
+        public byte detectorInfos_num;
+
+        public List<Fire_Extinguisher_Info> fireExtinguisherInfos = new List<Fire_Extinguisher_Info>();
+        public byte fireExtinguisherInfos_num;
+
+
         public void Function_Code_Judge(Transform_Info_From_T src)
         {
             switch (src.Function_Code)
             {
                 case 0x60:
-                    if (src.Function_Tag == 0x00)
+                    //if (src.Function_Tag == 0x00)
                         System_Info_alz(src);
-                    else
+                   //
                         break;
                     break;
                 case 0x70:
-                    if (src.Function_Tag == 0x00)
+                    //if (src.Function_Tag == 0x00)
                         Bug_Info_alz(src);
                     break;
                 case 0x80:
-                    if (src.Function_Tag == 0x00)
+                    //if (src.Function_Tag == 0x00)
                         Partition_Info_alz(src);
                     break;
                 case 0x90:
-                    if (src.Function_Tag == 0x00)
+                    //if (src.Function_Tag == 0x00)
                         Detector_Info_alz(src);
                     break;
                 case 0xA0:
-                    if (src.Function_Tag == 0x00)
+                    //if (src.Function_Tag == 0x00)
                         Fire_Extinguisher_Info_alz(src);
                     break;
                 default:
@@ -141,25 +157,27 @@ namespace ConsoleApp_Forerunner
         //系统信息解析
         private void System_Info_alz(Transform_Info_From_T src)
         {
+            //信息无误解析
             if(src.Function_Tag==0x00)
             {
-                Sys_Info ss;
-                byte num = Convert.ToByte(src.Data[0]);
-                ushort waring_count,bug_count,tt_count;
+                Sys_Info ss=new Sys_Info();
+                sysInfos_num = Convert.ToByte(src.Data[0]);
+                //ushort waring_count,bug_count,tt_count;
                 int tmp;
                 tmp = Convert.ToInt32(src.Data[1]);
                 tmp <<= 8;
-                waring_count = Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[2]));
+                ss.waring_count = Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[2]));
                 tmp = Convert.ToInt32(src.Data[3]);
                 tmp <<= 8;
-                bug_count= Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[4]));
+                ss.bug_count= Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[4]));
                 tmp = Convert.ToInt32(src.Data[5]);
                 tmp <<= 8;
-                tt_count = Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[6]));
+                ss.detector_count = Convert.ToUInt16(tmp + Convert.ToInt32(src.Data[6]));
+                sysInfos.Add(ss);
             }
             else if(src.Function_Tag==0x01)
             {
-
+                sysInfos_num = 0x00;
             }
             else
             {
@@ -172,11 +190,26 @@ namespace ConsoleApp_Forerunner
         {
             if (src.Function_Tag == 0x00)
             {
-
+                string str = src.Data[..src.Data.Length];
+                Bug_Info bug = new Bug_Info();
+                bugInfos_num = Convert.ToByte(str[0]);
+                int i = 1;
+                while (i < str.Length)
+                {
+                    bug.reserved1 = Convert.ToByte(str[i]);
+                    bug.reserved2 = Convert.ToByte(str[++i]);
+                    bug.def_zone = Convert.ToByte(str[++i]);
+                    bug.device_type = Convert.ToByte(str[++i]);
+                    bug.device_number = Convert.ToByte(str[++i]);
+                    bug.bug_code = Convert.ToByte(str[++i]);
+                    bugInfos.Add(bug);
+                    i++;
+                }
+                
             }
             else if (src.Function_Tag == 0x01)
             {
-
+                bugInfos_num = 0x00;
             }
         }
         //分区信息解析
@@ -184,11 +217,43 @@ namespace ConsoleApp_Forerunner
         {
             if (src.Function_Tag == 0x00)
             {
-
+                Partition_Info partitionInfo = new Partition_Info();
+                string str = src.Data.Substring(0, src.Data.Length);
+                int i = 0,tmp=0;
+                partitionInfos_num = Convert.ToByte(str[i++]);
+                while (i<str.Length)
+                {
+                    //预留
+                    partitionInfo.reserved = DecodeUshort(str, i);
+                    //防护区
+                    partitionInfo.def_zone = DecodeUshort(str,i+=2);
+                    //报警等级
+                    partitionInfo.waring_level = DecodeUshort(str, i+=2);
+                    //故障
+                    partitionInfo.bug = DecodeUshort(str, i+=2);
+                    //手动模式
+                    partitionInfo.handla_mode = DecodeUshort(str, i+=2);
+                    //自动模式
+                    partitionInfo.auto_mode = DecodeUshort(str, i+=2);
+                    //手动启动
+                    partitionInfo.handla_boot = DecodeUshort(str, i+=2);
+                    //手动急停
+                    partitionInfo.handla_shut = DecodeUshort(str, i += 2);
+                    //启动控制
+                    partitionInfo.boot_ctrl = DecodeUshort(str, i += 2);
+                    //延时
+                    partitionInfo.delay = DecodeUshort(str, i += 2);
+                    //启动喷洒
+                    partitionInfo.spray_start = DecodeUshort(str, i += 2);
+                    //喷洒
+                    partitionInfo.spraying = DecodeUshort(str, i += 2);
+                    i += 2;
+                    partitionInfos.Add(partitionInfo);
+                }
             }
             else if (src.Function_Tag == 0x01)
             {
-
+                partitionInfos_num = 0x00;
             }
         }
         //探测器信息解析
@@ -196,11 +261,28 @@ namespace ConsoleApp_Forerunner
         {
             if (src.Function_Tag == 0x00)
             {
-
+                Detector_Info detectorInfo = new Detector_Info();
+                string str = src.Data.Substring(0, src.Data.Length);
+                int i=0;
+                detectorInfos_num = Convert.ToByte(src.Data[i++]);
+                while (i < str.Length)
+                {
+                    detectorInfo.reserved = DecodeUshort(str, i += 2);
+                    detectorInfo.def_zone = DecodeUshort(str, i += 2);
+                    detectorInfo.type = DecodeUshort(str, i += 2);
+                    detectorInfo.ID = DecodeUshort(str, i += 2);
+                    detectorInfo.waring_level = DecodeUshort(str, i += 2);
+                    detectorInfo.temperaturer = DecodeUshort(str, i += 2);
+                    detectorInfo.CO = DecodeUshort(str, i += 2);
+                    detectorInfo.VOC = DecodeUshort(str, i += 2);
+                    detectorInfo.smoke = DecodeUshort(str, i += 2);
+                    i += 2;
+                    detectorInfos.Add(detectorInfo);
+                }
             }
             else if (src.Function_Tag == 0x01)
             {
-
+                detectorInfos_num = 0x00;
             }
         }
         //灭火器信息解析
@@ -214,6 +296,15 @@ namespace ConsoleApp_Forerunner
             {
 
             }
+        }
+
+        //解析双字节数据Ushort/Int16
+        private ushort DecodeUshort(string ss, int i)
+        {
+            int tmp;
+            tmp = Convert.ToInt32(ss[i]);
+            tmp <<= 8;
+            return Convert.ToUInt16(tmp + Convert.ToInt32(ss[++i]));
         }
     }
 }

@@ -4,6 +4,10 @@ using System.Text;
 
 namespace ConsoleApp_Forerunner
 {
+    public class Filed_Info
+    {
+
+    }
     public class Sys_Info
     {
         public Sys_Info per;
