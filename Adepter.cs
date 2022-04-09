@@ -47,11 +47,11 @@ namespace ConsoleApp_Forerunner
 
     public class Info_Adepter   //用来转换socket接收到的报文，转化成对应的结构体
     {
-        public Transform_Info_From_T String_2_Struct(string src_Info)      //解析socket报文，将其转化为 结构体
+        public Transform_Info_From_T String_2_Struct(byte[] src_Info)      //解析socket报文，将其转化为 结构体
         {
             Transform_Info_From_T carry=new Transform_Info_From_T { };
-            carry.START1 = src_Info[0];
-            carry.START2 = src_Info[1];
+            carry.START1 = Convert.ToChar(src_Info[0]);
+            carry.START2 = Convert.ToChar(src_Info[1]);
             byte tmp1 = Convert.ToByte(src_Info[2]);
             byte tmp2 = Convert.ToByte(src_Info[3]);
             int uni = tmp1;
@@ -63,10 +63,10 @@ namespace ConsoleApp_Forerunner
             carry.Function_Code  = Convert.ToByte(src_Info[5]);
             carry.Function_Tag = Convert.ToByte(src_Info[6]);
             carry.Data_Form = Convert.ToByte(src_Info[7]);
-            int poi = src_Info.LastIndexOf('E');
+            int poi = src_Info.GetUpperBound(0);
             carry.CRC = Convert.ToByte(src_Info[poi - 1]);
             carry.END = Convert.ToByte(src_Info[poi]);
-            carry.Data = src_Info[8..(poi - 1)];
+            carry.Data = src_Info[8..(poi - 1)].ToString();
             return carry;
         }
 

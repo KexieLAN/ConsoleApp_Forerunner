@@ -10,7 +10,7 @@ namespace ConsoleApp_Forerunner
     {
         static void Main(string[] args)
         {
-            string getInfo;
+            
             byte[] bufferBytes = Array.Empty<byte>(); 
 
             //SocketAddress add = new SocketAddress(AddressFamily.InterNetwork);
@@ -28,10 +28,10 @@ namespace ConsoleApp_Forerunner
 
             
             //无关代码
-            getInfo = Console.ReadLine();
+           //bufferBytes = Console.ReadLine();
             Info_Adepter info_Adepter = new Info_Adepter();
 
-            info_Adepter.Show_Info(info_Adepter.String_2_Struct(getInfo));
+            info_Adepter.Show_Info(info_Adepter.String_2_Struct( bufferBytes));
             Console.ReadKey();
         }
     }
