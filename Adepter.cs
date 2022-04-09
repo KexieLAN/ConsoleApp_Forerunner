@@ -123,7 +123,7 @@ namespace ConsoleApp_Forerunner
         public List<Fire_Extinguisher_Info> fireExtinguisherInfos = new List<Fire_Extinguisher_Info>();
         public byte fireExtinguisherInfos_num;
 
-
+        //判定报文需要如何解析。
         public void Function_Code_Judge(Transform_Info_From_T src)
         {
             switch (src.Function_Code)
@@ -132,7 +132,7 @@ namespace ConsoleApp_Forerunner
                     //if (src.Function_Tag == 0x00)
                         System_Info_alz(src);
                    //
-                        break;
+                        //break;
                     break;
                 case 0x70:
                     //if (src.Function_Tag == 0x00)
@@ -219,7 +219,7 @@ namespace ConsoleApp_Forerunner
             {
                 Partition_Info partitionInfo = new Partition_Info();
                 string str = src.Data.Substring(0, src.Data.Length);
-                int i = 0,tmp=0;
+                int i = 0;
                 partitionInfos_num = Convert.ToByte(str[i++]);
                 while (i<str.Length)
                 {
