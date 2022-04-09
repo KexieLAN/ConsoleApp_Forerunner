@@ -11,19 +11,25 @@ namespace ConsoleApp_Forerunner
         static void Main(string[] args)
         {
             string getInfo;
+            byte[] bufferBytes = Array.Empty<byte>(); 
 
-            SocketAddress add = new SocketAddress(AddressFamily.InterNetwork);
+            //SocketAddress add = new SocketAddress(AddressFamily.InterNetwork);
             IPAddress ipAddress = new IPAddress(new byte[] {127, 0, 0, 1});
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, 1234);
+            int pot=Convert.ToInt32(Console.ReadLine());
+            IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, pot);
 
-            getInfo=Console.ReadLine();
-            Info_Adepter info_Adepter = new Info_Adepter();
-
-            //接受地址。
+            //创建Socket
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //绑定地址
             socket.Bind(ipEndPoint);
-            socket.Listen(100);
-            Socket temp = socket.Accept();
+            socket.Listen(100);//监听
+            Socket temp = socket.Accept();//接受链接
+            temp.Receive(bufferBytes);
+
+            
+            //无关代码
+            getInfo = Console.ReadLine();
+            Info_Adepter info_Adepter = new Info_Adepter();
 
             info_Adepter.Show_Info(info_Adepter.String_2_Struct(getInfo));
             Console.ReadKey();
